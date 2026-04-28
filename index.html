@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MindCare - Your AI-powered mental health companion. Track your mood, get support, and improve your wellness.">
+    <meta name="theme-color" content="#0b1220">
+    <title>Hayat Mind Care - Mental Health Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header role="banner">
+            <h1><i class="fas fa-brain"></i> MindCare</h1>
+            <p class="subtitle">Your AI-powered mental health companion</p>
+            <div class="disclaimer-box" role="note" aria-label="Disclaimer">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                <p>Educational tool only • Not medical advice • Crisis: Call 988</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main role="main">
+            <!-- Quick Stats -->
+            <section class="dashboard-section" aria-labelledby="stats-heading">
+                <h2 id="stats-heading"><i class="fas fa-chart-line" aria-hidden="true"></i> Your Wellness Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Today's Mood</h3>
+                        <div id="current-mood" aria-live="polite">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Stress Level</h3>
+                        <div id="current-stress" aria-live="polite">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Sleep Goal</h3>
+                        <div>7-9 hours</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="dashboard-section" aria-labelledby="actions-heading">
+                <h2 id="actions-heading"><i class="fas fa-rocket" aria-hidden="true"></i> Quick Actions</h2>
+                <div class="action-grid">
+                    <a href="mood-tracker.html" class="action-card" title="Go to mood tracker">
+                        <i class="fas fa-smile" aria-hidden="true"></i>
+                        <h3>Log Mood</h3>
+                        <p>Track how you're feeling</p>
+                    </a>
+                    <a href="chatbot.html" class="action-card" title="Chat with AI support">
+                        <i class="fas fa-robot" aria-hidden="true"></i>
+                        <h3>Chat Support</h3>
+                        <p>Talk to our AI helper</p>
+                    </a>
+                    <a href="#" class="action-card" id="quick-tips-btn" title="Get quick wellness tips">
+                        <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                        <h3>Quick Tips</h3>
+                        <p>Instant wellness tips</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Recent History -->
+            <section class="dashboard-section" aria-labelledby="history-heading">
+                <h2 id="history-heading"><i class="fas fa-history" aria-hidden="true"></i> Recent Entries</h2>
+                <div id="history-container" role="region" aria-live="polite">
+                    <p>No entries yet. <a href="mood-tracker.html">Log your first mood!</a></p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer role="contentinfo">
+            <p>MindCare  • Created with <span aria-label="love">❤️</span> for mental health awareness</p>
+            <p class="footer-disclaimer">This is a demonstration tool only. If in crisis, contact 988.</p>
+        </footer>
+    </div>
+
+    <!-- Quick Tips Modal -->
+    <div id="tips-modal" class="modal" role="dialog" aria-labelledby="tips-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <button class="close" aria-label="Close tips modal">&times;</button>
+            <h2 id="tips-modal-title"><i class="fas fa-lightbulb" aria-hidden="true"></i> Wellness Tips</h2>
+            <div id="tips-list">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="script.js"></script>
+</body> 
+</html>

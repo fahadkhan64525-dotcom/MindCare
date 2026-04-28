@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track your mood and stress levels with MindCare mood tracker.">
+    <meta name="theme-color" content="#0b1220">
+    <title>Mood Tracker | MindCare</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav aria-label="Main navigation">
+            <a href="index.html" class="back-btn" title="Return to dashboard">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Dashboard
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main role="main">
+            <div class="form-container">
+                <header style="text-align: center; margin-bottom: 40px;">
+                    <h1><i class="fas fa-smile" aria-hidden="true"></i> How Are You Feeling Today?</h1>
+                    <p class="subtitle">Track your mood and get insights about your stress levels</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                        Step <span id="current-step" aria-live="polite">1</span> of 3
+                    </div>
+                </header>
+
+                <!-- Form Steps -->
+                <form id="mood-form">
+                    <!-- Step 1: Mood Selection -->
+                    <div class="form-step" id="step-1" role="region" aria-label="Step 1: Select your mood">
+                        <h2><i class="fas fa-heart" aria-hidden="true"></i> Select Your Current Mood</h2>
+                        <p style="color: #666; margin-bottom: 30px;">How would you describe your emotional state right now?</p>
+                        
+                        <div class="mood-selector" role="listbox">
+                            <div class="mood-option happy" data-mood="happy" role="option" tabindex="0">
+                                <i class="fas fa-smile-beam" aria-hidden="true"></i>
+                                <h3>Happy</h3>
+                                <p>Feeling good and positive</p>
+                            </div>
+                            <div class="mood-option neutral" data-mood="neutral" role="option" tabindex="0">
+                                <i class="fas fa-meh" aria-hidden="true"></i>
+                                <h3>Neutral</h3>
+                                <p>Calm and balanced</p>
+                            </div>
+                            <div class="mood-option sad" data-mood="sad" role="option" tabindex="0">
+                                <i class="fas fa-sad-tear" aria-hidden="true"></i>
+                                <h3>Sad</h3>
+                                <p>Feeling down or low</p>
+                            </div>
+                            <div class="mood-option stressed" data-mood="stressed" role="option" tabindex="0">
+                                <i class="fas fa-tired" aria-hidden="true"></i>
+                                <h3>Stressed</h3>
+                                <p>Anxious or overwhelmed</p>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="mood-input" name="mood" required>
+                        
+                        <div style="margin-top: 40px; text-align: center;">
+                            <button type="button" class="btn-primary" onclick="nextStep(1)" aria-label="Continue to step 2">
+                                Next <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Daily Metrics -->
+                    <div class="form-step" id="step-2" style="display: none;" role="region" aria-label="Step 2: Daily metrics">
+                        <h2><i class="fas fa-chart-line" aria-hidden="true"></i> Your Daily Metrics</h2>
+                        <p style="color: #666; margin-bottom: 30px;">Help us understand your day better</p>
+                        
+                        <div class="input-group">
+                            <div class="form-group number-input">
+                                <label for="sleep">
+                                    <i class="fas fa-moon" aria-hidden="true"></i> Sleep Hours
+                                </label>
+                                <input type="number" id="sleep" name="sleep" min="0" max="24" step="0.5" 
+                                       placeholder="7" required aria-label="Hours of sleep last night">
+                                <span class="unit">hours</span>
+                                <small style="color: #666; display: block; margin-top: 5px;">
+                                    Last night's sleep duration
+                                </small>
+                            </div>
+                            
+                            <div class="form-group number-input">
+                                <label for="screen-time">
+                                    <i class="fas fa-desktop" aria-hidden="true"></i> Screen Time
+                                </label>
+                                <input type="number" id="screen-time" name="screen_time" min="0" max="24" 
+                                       placeholder="6" required aria-label="Today's screen time in hours">
+                                <span class="unit">hours</span>
+                                <small style="color: #666; display: block; margin-top: 5px;">
+                                    Today's screen time
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="workload">
+                                <i class="fas fa-briefcase" aria-hidden="true"></i> Work/School Hours
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="range" id="workload-slider" min="0" max="16" step="0.5" value="8" 
+                                       style="flex: 1;" aria-label="Work or school hours slider">
+                                <input type="number" id="workload" name="workload" min="0" max="16" step="0.5" 
+                                       value="8" required style="width: 80px; text-align: center;" aria-label="Work or school hours">
+                                <span style="font-weight: 600;">hours</span>
+                            </div>
+                            <small style="color: #666; display: block; margin-top: 5px;">
+                                Hours spent on work/studies today
+                            </small>
+                        </div>
+                        
+                        <div style="margin-top: 40px; display: flex; gap: 15px;">
+                            <button type="button" class="btn-secondary" onclick="prevStep(2)" style="flex: 1;" aria-label="Go back to mood selection">
+                                <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
+                            </button>
+                            <button type="button" class="btn-primary" onclick="nextStep(2)" style="flex: 2;" aria-label="Continue to review and submit">
+                                Analyze Stress Level <i class="fas fa-brain" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Review & Submit -->
+                    <div class="form-step" id="step-3" style="display: none;" role="region" aria-label="Step 3: Review and submit">
+                        <h2><i class="fas fa-clipboard-check" aria-hidden="true"></i> Review & Submit</h2>
+                        <p style="color: #666; margin-bottom: 30px;">Here's what you entered:</p>
+                        
+                        <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                                <div>
+                                    <strong>Mood:</strong>
+                                    <div id="review-mood" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                                <div>
+                                    <strong>Sleep:</strong>
+                                    <div id="review-sleep" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                                <div>
+                                    <strong>Screen Time:</strong>
+                                    <div id="review-screen" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                                <div>
+                                    <strong>Workload:</strong>
+                                    <div id="review-workload" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="disclaimer-box" style="margin-bottom: 30px;">
+                            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                            <p>Remember: This is an educational tool only. Results are not medical advice.</p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px;">
+                            <button type="button" class="btn-secondary" onclick="prevStep(3)" style="flex: 1;" aria-label="Edit your entries">
+                                <i class="fas fa-edit" aria-hidden="true"></i> Edit
+                            </button>
+                            <button type="submit" class="btn-primary" style="flex: 2;">
+                                <i class="fas fa-chart-bar" aria-hidden="true"></i> Get Stress Analysis
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Results Section -->
+                <div class="result-container" id="result-container"></div>
+            </div>
+            
+            <!-- Tips Section -->
+            <div style="max-width: 600px; margin: 40px auto 0;">
+                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> Tips for Accurate Tracking</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #4CAF50;">
+                        <strong>Be Consistent</strong>
+                        <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Track at the same time each day for best results.</p>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #2196F3;">
+                        <strong>Be Honest</strong>
+                        <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Your data is private. Accurate input means better insights.</p>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #FF9800;">
+                        <strong>Look for Patterns</strong>
+                        <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Check your history to see what affects your mood.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer role="contentinfo">
+            <p>MindCare • Mental Health Support Tool • Created with <span aria-label="love">❤️</span></p>
+            <p class="footer-disclaimer">This is a demonstration tool only. If in crisis, contact 988 or a mental health professional.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Form Step Navigation
+        let currentStep = 1;
+        
+        function updateProgress() {
+            const progress = ((currentStep - 1) / 2) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('current-step').textContent = currentStep;
+            
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.style.display = 'none';
+            });
+            
+            // Show current step
+            document.getElementById(`step-${currentStep}`).style.display = 'block';
+        }
+        
+        function nextStep(stepNumber) {
+            if (stepNumber === 1) {
+                // Validate mood selection
+                const selectedMood = document.getElementById('mood-input').value;
+                if (!selectedMood) {
+                    alert('Please select your mood first!');
+                    return;
+                }
+            } else if (stepNumber === 2) {
+                // Validate metrics
+                const sleep = document.getElementById('sleep').value;
+                const screenTime = document.getElementById('screen-time').value;
+                const workload = document.getElementById('workload').value;
+                
+                if (!sleep || !screenTime || !workload) {
+                    alert('Please fill in all metrics!');
+                    return;
+                }
+                
+                // Update review section
+                updateReviewSection();
+            }
+            
+            currentStep++;
+            updateProgress();
+        }
+        
+        function prevStep(stepNumber) {
+            currentStep--;
+            updateProgress();
+        }
+        
+        // Update review section with entered data
+        function updateReviewSection() {
+            const moodMap = {
+                'happy': '😊 Happy',
+                'neutral': '😐 Neutral', 
+                'sad': '😔 Sad',
+                'stressed': '😫 Stressed'
+            };
+            
+            document.getElementById('review-mood').textContent = 
+                moodMap[document.getElementById('mood-input').value] || 'Not selected';
+            document.getElementById('review-sleep').textContent = 
+                document.getElementById('sleep').value + ' hours';
+            document.getElementById('review-screen').textContent = 
+                document.getElementById('screen-time').value + ' hours';
+            document.getElementById('review-workload').textContent = 
+                document.getElementById('workload').value + ' hours';
+        }
+        
+        // Link slider and number input for workload
+        const workloadSlider = document.getElementById('workload-slider');
+        const workloadInput = document.getElementById('workload');
+        
+        if (workloadSlider && workloadInput) {
+            workloadSlider.addEventListener('input', function() {
+                workloadInput.value = this.value;
+            });
+            
+            workloadInput.addEventListener('input', function() {
+                workloadSlider.value = this.value;
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Make sure mood selector works
+            const moodOptions = document.querySelectorAll('.mood-option');
+            moodOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    moodOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('mood-input').value = this.dataset.mood;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav aria-label="Main navigation">
+            <a href="index.html" class="back-btn" title="Return to dashboard">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Dashboard
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main role="main">
+            <div class="form-container">
+                <header style="text-align: center; margin-bottom: 40px;">
+                    <h1><i class="fas fa-smile" aria-hidden="true"></i> How Are You Feeling Today?</h1>
+                    <p class="subtitle">Track your mood and get insights about your stress levels</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                        Step <span id="current-step" aria-live="polite">1</span> of 3
+                    </div>
+                </header>
+
+                <!-- Form Steps -->
+                <form id="mood-form">
+                    <!-- Step 1: Mood Selection -->
+                    <div class="form-step" id="step-1" role="region" aria-label="Step 1: Select your mood">
+                        <h2><i class="fas fa-heart" aria-hidden="true"></i> Select Your Current Mood</h2>
+                        <p style="color: #666; margin-bottom: 30px;">How would you describe your emotional state right now?</p>
+                        
+                        <div class="mood-selector" role="listbox">
+                            <div class="mood-option happy" data-mood="happy" role="option" tabindex="0">
+                                <i class="fas fa-smile-beam" aria-hidden="true"></i>
+                                <h3>Happy</h3>
+                                <p>Feeling good and positive</p>
+                            </div>
+                            <div class="mood-option neutral" data-mood="neutral" role="option" tabindex="0">
+                                <i class="fas fa-meh" aria-hidden="true"></i>
+                                <h3>Neutral</h3>
+                                <p>Calm and balanced</p>
+                            </div>
+                            <div class="mood-option sad" data-mood="sad" role="option" tabindex="0">
+                                <i class="fas fa-sad-tear" aria-hidden="true"></i>
+                                <h3>Sad</h3>
+                                <p>Feeling down or low</p>
+                            </div>
+                            <div class="mood-option stressed" data-mood="stressed" role="option" tabindex="0">
+                                <i class="fas fa-tired" aria-hidden="true"></i>
+                                <h3>Stressed</h3>
+                                <p>Anxious or overwhelmed</p>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="mood-input" name="mood" required>
+                        
+                        <div style="margin-top: 40px; text-align: center;">
+                            <button type="button" class="btn-primary" onclick="nextStep(1)" aria-label="Continue to step 2">
+                                Next <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Daily Metrics -->
+                    <div class="form-step" id="step-2" style="display: none;" role="region" aria-label="Step 2: Daily metrics">
+                        <h2><i class="fas fa-chart-line" aria-hidden="true"></i> Your Daily Metrics</h2>
+                        <p style="color: #666; margin-bottom: 30px;">Help us understand your day better</p>
+                        
+                        <div class="input-group">
+                            <div class="form-group number-input">
+                                <label for="sleep">
+                                    <i class="fas fa-moon" aria-hidden="true"></i> Sleep Hours
+                                </label>
+                                <input type="number" id="sleep" name="sleep" min="0" max="24" step="0.5" 
+                                       placeholder="7" required aria-label="Hours of sleep last night">
+                                <span class="unit">hours</span>
+                                <small style="color: #666; display: block; margin-top: 5px;">
+                                    Last night's sleep duration
+                                </small>
+                            </div>
+                            
+                            <div class="form-group number-input">
+                                <label for="screen-time">
+                                    <i class="fas fa-desktop" aria-hidden="true"></i> Screen Time
+                                </label>
+                                <input type="number" id="screen-time" name="screen_time" min="0" max="24" 
+                                       placeholder="6" required aria-label="Today's screen time in hours">
+                                <span class="unit">hours</span>
+                                <small style="color: #666; display: block; margin-top: 5px;">
+                                    Today's screen time
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="workload">
+                                <i class="fas fa-briefcase" aria-hidden="true"></i> Work/School Hours
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="range" id="workload-slider" min="0" max="16" step="0.5" value="8" 
+                                       style="flex: 1;" aria-label="Work or school hours slider">
+                                <input type="number" id="workload" name="workload" min="0" max="16" step="0.5" 
+                                       value="8" required style="width: 80px; text-align: center;" aria-label="Work or school hours">
+                                <span style="font-weight: 600;">hours</span>
+                            </div>
+                            <small style="color: #666; display: block; margin-top: 5px;">
+                                Hours spent on work/studies today
+                            </small>
+                        </div>
+                        
+                        <div style="margin-top: 40px; display: flex; gap: 15px;">
+                            <button type="button" class="btn-secondary" onclick="prevStep(2)" style="flex: 1;" aria-label="Go back to mood selection">
+                                <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
+                            </button>
+                            <button type="button" class="btn-primary" onclick="nextStep(2)" style="flex: 2;" aria-label="Continue to review and submit">
+                                Analyze Stress Level <i class="fas fa-brain" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Review & Submit -->
+                    <div class="form-step" id="step-3" style="display: none;" role="region" aria-label="Step 3: Review and submit">
+                        <h2><i class="fas fa-clipboard-check" aria-hidden="true"></i> Review & Submit</h2>
+                        <p style="color: #666; margin-bottom: 30px;">Here's what you entered:</p>
+                        
+                        <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                                <div>
+                                    <strong>Mood:</strong>
+                                    <div id="review-mood" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                                <div>
+                                    <strong>Sleep:</strong>
+                                    <div id="review-sleep" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                                <div>
+                                    <strong>Screen Time:</strong>
+                                    <div id="review-screen" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                                <div>
+                                    <strong>Workload:</strong>
+                                    <div id="review-workload" style="font-size: 1.2rem; margin-top: 5px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="disclaimer-box" style="margin-bottom: 30px;">
+                            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                            <p>Remember: This is an educational tool only. Results are not medical advice.</p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px;">
+                            <button type="button" class="btn-secondary" onclick="prevStep(3)" style="flex: 1;" aria-label="Edit your entries">
+                                <i class="fas fa-edit" aria-hidden="true"></i> Edit
+                            </button>
+                            <button type="submit" class="btn-primary" style="flex: 2;">
+                                <i class="fas fa-chart-bar" aria-hidden="true"></i> Get Stress Analysis
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Results Section -->
+                <div class="result-container" id="result-container"></div>
+            </div>
+            
+            <!-- Tips Section -->
+            <div style="max-width: 600px; margin: 40px auto 0;">
+                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> Tips for Accurate Tracking</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #4CAF50;">
+                        <strong>Be Consistent</strong>
+                        <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Track at the same time each day for best results.</p>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #2196F3;">
+                        <strong>Be Honest</strong>
+                        <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Your data is private. Accurate input means better insights.</p>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #FF9800;">
+                        <strong>Look for Patterns</strong>
+                        <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Check your history to see what affects your mood.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer role="contentinfo">
+            <p>MindCare • Mental Health Support Tool • Created with <span aria-label="love">❤️</span></p>
+            <p class="footer-disclaimer">This is a demonstration tool only. If in crisis, contact 988 or a mental health professional.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Form Step Navigation
+        let currentStep = 1;
+        
+        function updateProgress() {
+            const progress = ((currentStep - 1) / 2) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('current-step').textContent = currentStep;
+            
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.style.display = 'none';
+            });
+            
+            // Show current step
+            document.getElementById(`step-${currentStep}`).style.display = 'block';
+        }
+        
+        function nextStep(stepNumber) {
+            if (stepNumber === 1) {
+                // Validate mood selection
+                const selectedMood = document.getElementById('mood-input').value;
+                if (!selectedMood) {
+                    alert('Please select your mood first!');
+                    return;
+                }
+            } else if (stepNumber === 2) {
+                // Validate metrics
+                const sleep = document.getElementById('sleep').value;
+                const screenTime = document.getElementById('screen-time').value;
+                const workload = document.getElementById('workload').value;
+                
+                if (!sleep || !screenTime || !workload) {
+                    alert('Please fill in all metrics!');
+                    return;
+                }
+                
+                // Update review section
+                updateReviewSection();
+            }
+            
+            currentStep++;
+            updateProgress();
+        }
+        
+        function prevStep(stepNumber) {
+            currentStep--;
+            updateProgress();
+        }
+        
+        // Update review section with entered data
+        function updateReviewSection() {
+            const moodMap = {
+                'happy': '😊 Happy',
+                'neutral': '😐 Neutral', 
+                'sad': '😔 Sad',
+                'stressed': '😫 Stressed'
+            };
+            
+            document.getElementById('review-mood').textContent = 
+                moodMap[document.getElementById('mood-input').value] || 'Not selected';
+            document.getElementById('review-sleep').textContent = 
+                document.getElementById('sleep').value + ' hours';
+            document.getElementById('review-screen').textContent = 
+                document.getElementById('screen-time').value + ' hours';
+            document.getElementById('review-workload').textContent = 
+                document.getElementById('workload').value + ' hours';
+        }
+        
+        // Link slider and number input for workload
+        const workloadSlider = document.getElementById('workload-slider');
+        const workloadInput = document.getElementById('workload');
+        
+        if (workloadSlider && workloadInput) {
+            workloadSlider.addEventListener('input', function() {
+                workloadInput.value = this.value;
+            });
+            
+            workloadInput.addEventListener('input', function() {
+                workloadSlider.value = this.value;
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Make sure mood selector works
+            const moodOptions = document.querySelectorAll('.mood-option');
+            moodOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    moodOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('mood-input').value = this.dataset.mood;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat with MindCare AI support companion. Get instant mental health support and wellness suggestions.">
+    <meta name="theme-color" content="#0b1220">
+    <title>Chat Support | MindCare</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav aria-label="Main navigation">
+            <a href="index.html" class="back-btn" title="Return to dashboard">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Dashboard
+            </a>
+        </nav>
+
+        <!-- Main Chat Area -->
+        <main class="chat-page" role="main">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-bot-icon" aria-hidden="true">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>MindCare Support Chat</h1>
+                <p class="subtitle">I'm here to listen and offer supportive suggestions</p>
+                <div class="disclaimer-box" style="max-width: 600px; margin: 20px auto 0;" role="note" aria-label="Disclaimer">
+                    <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                    <p>I am a demo chatbot, not a mental health professional. For emergencies, contact 988.</p>
+                </div>
+            </div>
+
+            <!-- Chat Container -->
+            <div class="chat-container" role="region" aria-label="Chat conversation">
+                <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+                    <!-- Messages will appear here -->
+                    <div class="message bot-message">
+                        <p>Hello there! 👋 I'm your MindCare support companion.</p>
+                        <p>I'm here to listen and offer supportive suggestions based on mental wellness principles. Remember, I'm an educational tool and not a replacement for professional help.</p>
+                        <p>How are you feeling today? You can talk to me about stress, mood, sleep, or anything on your mind.</p>
+                        <div class="message-time" id="init-time"></div>
+                    </div>
+                </div>
+                
+                <!-- Quick Questions -->
+                <div class="quick-questions">
+                    <h3><i class="fas fa-bolt" aria-hidden="true"></i> Quick questions you can ask:</h3>
+                    <div class="question-chips" role="listbox">
+                        <div class="question-chip" role="option" tabindex="0" onclick="sendQuickQuestion('I\'m feeling stressed today')" title="Ask about stress">
+                            I'm feeling stressed
+                        </div>
+                        <div class="question-chip" role="option" tabindex="0" onclick="sendQuickQuestion('I can\'t sleep well')" title="Ask about sleep">
+                            Can't sleep well
+                        </div>
+                        <div class="question-chip" role="option" tabindex="0" onclick="sendQuickQuestion('I feel sad and lonely')" title="Ask about sadness">
+                            Feeling sad
+                        </div>
+                        <div class="question-chip" role="option" tabindex="0" onclick="sendQuickQuestion('How to manage workload stress?')" title="Ask about workload">
+                            Workload stress
+                        </div>
+                        <div class="question-chip" role="option" tabindex="0" onclick="sendQuickQuestion('I need calming techniques')" title="Ask for calming techniques">
+                            Calming techniques
+                        </div>
+                        <div class="question-chip" role="option" tabindex="0" onclick="sendQuickQuestion('How to improve my mood?')" title="Ask for mood improvement tips">
+                            Improve mood
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <form id="chat-form" aria-label="Send message">
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" 
+                           placeholder="Type your message here... (e.g., 'I'm feeling anxious about work')" 
+                           autocomplete="off"
+                           aria-label="Message input">
+                    <button type="submit" title="Send message">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Send
+                    </button>
+                </div>
+            </form>
+
+            <!-- Safety Note -->
+            <div class="safety-note">
+                <strong><i class="fas fa-shield-alt" aria-hidden="true"></i> Important Safety Information</strong>
+                <p>This chatbot provides supportive suggestions based on general wellness principles. It does not provide medical advice, diagnosis, or treatment. If you're experiencing a mental health crisis, suicidal thoughts, or need immediate help, please contact:</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li><strong>988</strong> - Suicide & Crisis Lifeline</li>
+                    <li><strong>741741</strong> - Crisis Text Line (text HOME)</li>
+                    <li>Your local emergency services</li>
+                </ul>
+            </div>
+
+            <!-- Emergency Section -->
+            <div class="emergency-section">
+                <h3><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Need Immediate Help?</h3>
+                <p>If you or someone you know is in crisis, please reach out to a professional immediately.</p>
+                <button class="emergency-btn" onclick="window.open('tel:988')" title="Call 988 Suicide & Crisis Lifeline">
+                    <i class="fas fa-phone" aria-hidden="true"></i> Call 988 Suicide & Crisis Lifeline
+                </button>
+                <p style="margin-top: 15px; font-size: 0.9rem;">
+                    Available 24/7, free and confidential support
+                </p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer role="contentinfo">
+            <p>MindCare • Support Chat • Educational Tool Only</p>
+            <p class="footer-disclaimer">This chatbot is for demonstration purposes and does not provide medical advice.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="script.js"></script> 
+    <script>
+        // Set initial message time
+        document.getElementById('init-time').textContent = getCurrentTime();
+        
+        // Quick question function
+        function sendQuickQuestion(text) {
+            document.getElementById('chat-input').value = text;
+            document.getElementById('chat-form').dispatchEvent(new Event('submit', { cancelable: true }));
+        }
+        
+        // Get current time for messages
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        // Custom chat functions for this page
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Focus on input
+            chatInput.focus();
+            
+            chatForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // Add user message
+                addUserMessage(message);
+                chatInput.value = '';
+                
+                // Show typing indicator
+                const typingIndicator = addTypingIndicator();
+                
+                try {
+                    // Use the API function from script.js
+                    const response = await fetch(`${API_BASE_URL}/chat`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: message })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Remove typing indicator
+                    typingIndicator.remove();
+                    
+                    // Add bot response
+                    addBotMessage(data.response);
+                    
+                    // Add disclaimer on first response
+                    if (!window.disclaimerShown) {
+                        setTimeout(() => {
+                            addBotMessage(`<strong>Note:</strong> ${data.note}<br><br>${data.disclaimer}`);
+                        }, 500);
+                        window.disclaimerShown = true;
+                    }
+                    
+                } catch (error) {
+                    typingIndicator.remove();
+                    // Fallback responses
+                    const fallbackResponses = [
+                        "I understand you're reaching out. Sometimes just expressing how you feel can be helpful.",
+                        "Thank you for sharing. Remember to be kind to yourself today.",
+                        "I hear you. Taking slow, deep breaths can sometimes help create a moment of calm.",
+                        "That sounds challenging. Would you like to try a quick grounding exercise? Name 5 things you can see around you."
+                    ];
+                    
+                    const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+                    addBotMessage(randomResponse);
+                    addBotMessage("<em>Note: I'm currently in offline mode but still here to listen.</em>");
+                }
+            });
+            
+            // Helper functions
+            function addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message user-message';
+                messageDiv.innerHTML = `
+                    <p>${text}</p>
+                    <div class="message-time">${getCurrentTime()}</div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            function addBotMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot-message';
+                messageDiv.innerHTML = `
+                    <p>${text}</p>
+                    <div class="message-time">${getCurrentTime()}</div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            function addTypingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.className = 'typing-indicator';
+                indicator.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <span style="margin-left: 10px; color: #666;">MindCare is thinking...</span>
+                `;
+                chatMessages.appendChild(indicator);
+                scrollToBottom();
+                return indicator;
+            }
+            
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Enter key to send
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    chatForm.dispatchEvent(new Event('submit', { cancelable: true }));
+                }
+            });
+            
+            // Sample welcome questions
+            const welcomeQuestions = [
+                "I'm feeling stressed about work",
+                "How can I improve my sleep?",
+                "I feel anxious all the time",
+                "What are some quick mood boosters?"
+            ];
+            
+            // Add some sample questions after a delay
+            setTimeout(() => {
+                const questionsDiv = document.createElement('div');
+                questionsDiv.style.marginTop = '15px';
+                questionsDiv.style.fontSize = '0.9rem';
+                questionsDiv.style.color = '#666';
+                questionsDiv.innerHTML = `
+                    <p>You can ask me things like:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                        ${welcomeQuestions.map(q => 
+                            `<span style="background: rgba(108, 99, 255, 0.1); padding: 5px 12px; border-radius: 15px; cursor: pointer;" 
+                                  onclick="sendQuickQuestion('${q}')">${q}</span>`
+                        ).join('')}
+                    </div>
+                `;
+                
+                const lastMessage = chatMessages.lastElementChild;
+                if (lastMessage.classList.contains('bot-message')) {
+                    lastMessage.appendChild(questionsDiv);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
