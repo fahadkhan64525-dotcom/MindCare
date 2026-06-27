@@ -3,7 +3,7 @@
 Startup script for MindCare API
 Handles initialization and starts the server
 """
-
+import numpy
 import sys
 import os
 import argparse
